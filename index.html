@@ -8,9 +8,20 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body onload="init()">
+  <header>
+    <h1>Tic Tac Toe</h1>
+  </header>
 
-  <div id="content"></div>
+  <main>
+    <div id="statusMessage" class="status-message"></div>
+    <div class="game-container">
+      <div class="player-x-indicator" id="playerXIndicator">X</div>
+      <div id="board" class="game-board"></div>
+      <div class="player-o-indicator" id="playerOIndicator">O</div>
+    </div>
+    <button id="newGameBtn" class="new-game-btn">New Game</button>
+  </main>
 
   <script src="script.js"></script>
 </body>
