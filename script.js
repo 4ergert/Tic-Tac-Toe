@@ -6,10 +6,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Fraktal-Parameter und Hilfsfunktionen GLOBAL deklarieren
 let firstClickDone = false;
-let currentZoom = 1.5;
+let currentZoom = 1.3;
 let fractalParams = {
   maxIter: 64,
-  zoom: 1.5,
+  zoom: 1.3,
   offsetX: -0.7,
   offsetY: 0,
   colorOffset: 0
