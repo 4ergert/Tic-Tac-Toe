@@ -6,11 +6,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Fraktal-Parameter und Hilfsfunktionen GLOBAL deklarieren
 let firstClickDone = false;
-let currentZoom = 1.3;
+let currentZoom = 0.7;
 let fractalParams = {
-  maxIter: 64,
-  zoom: 1.3,
-  offsetX: -0.7,
+  maxIter: 256,
+  zoom: 0.7,
+  offsetX: -0.5,
   offsetY: 0,
   colorOffset: 0
 };
@@ -23,9 +23,14 @@ function drawFractal(params) {
     return;
   }
   console.log('drawFractal called', params);
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
   const ctx = canvas.getContext('2d');
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
   const w = canvas.width;
   const h = canvas.height;
   const maxIter = params.maxIter;
