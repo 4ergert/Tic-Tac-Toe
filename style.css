@@ -1,3 +1,89 @@
+/* X wird "gezeichnet" mit psychedelischer Bewegung */
+.psy-x-draw .psy-x-line1,
+.psy-x-draw .psy-x-line2 {
+  stroke-dasharray: 72;
+  stroke-dashoffset: 72;
+  opacity: 0.8;
+  filter: blur(2px) brightness(1.5) hue-rotate(0deg);
+}
+.psy-x-draw .psy-x-line1 {
+  animation: psy-x-draw-line1 0.75s cubic-bezier(0.68,-0.55,0.27,1.55) forwards, psy-x-draw-wobble 1.5s linear;
+}
+.psy-x-draw .psy-x-line2 {
+  animation: psy-x-draw-line2 0.75s 0.75s cubic-bezier(0.68,-0.55,0.27,1.55) forwards, psy-x-draw-wobble 1.5s linear;
+}
+
+@keyframes psy-x-draw-line1 {
+  0% { stroke-dashoffset: 72; opacity: 0.2; filter: blur(4px) brightness(2) hue-rotate(0deg); }
+  80% { opacity: 1; filter: blur(1px) brightness(1.2) hue-rotate(180deg); }
+  100% { stroke-dashoffset: 0; opacity: 1; filter: blur(0) brightness(1) hue-rotate(360deg); }
+}
+@keyframes psy-x-draw-line2 {
+  0% { stroke-dashoffset: 72; opacity: 0.2; filter: blur(4px) brightness(2) hue-rotate(0deg); }
+  80% { opacity: 1; filter: blur(1px) brightness(1.2) hue-rotate(180deg); }
+  100% { stroke-dashoffset: 0; opacity: 1; filter: blur(0) brightness(1) hue-rotate(360deg); }
+}
+@keyframes psy-x-draw-wobble {
+  0% { transform: scale(0.8,1.2) rotate(-10deg) skewX(0deg) skewY(0deg) translate(0,0); }
+  20% { transform: scale(1.1,0.7) rotate(13deg) skewX(12deg) skewY(-8deg) translate(-4px,2px); }
+  40% { transform: scale(0.9,1.25) rotate(-15deg) skewX(-10deg) skewY(10deg) translate(5px,-3px); }
+  60% { transform: scale(1.05,0.95) rotate(8deg) skewX(8deg) skewY(-6deg) translate(-3px,2px); }
+  80% { transform: scale(1,1.05) rotate(-6deg) skewX(-6deg) skewY(6deg) translate(2px,-2px); }
+  100% { transform: scale(1) rotate(0deg) skewX(0deg) skewY(0deg) translate(0,0); }
+}
+/* Psychedelische X-Animation */
+/* Psychedelische X-Animation: nur 1,5s, mit "anormaler" Bewegung */
+.psy-x-animate {
+  animation: psy-x-wobble 1.5s cubic-bezier(0.68,-0.55,0.27,1.55) both;
+  transform-origin: 40px 40px;
+}
+
+@keyframes psy-x-wobble {
+  0% {
+    transform: scale(0.2,0.4) rotate(-33deg) skewX(0deg) skewY(0deg) translate(0px,0px);
+    filter: blur(6px) brightness(2) hue-rotate(0deg);
+    opacity: 0.2;
+  }
+  13% {
+    transform: scale(1.15,0.7) rotate(17deg) skewX(18deg) skewY(-13deg) translate(-7px,3px);
+    filter: blur(2.5px) brightness(1.6) hue-rotate(60deg);
+  }
+  27% {
+    transform: scale(0.85,1.25) rotate(-21deg) skewX(-19deg) skewY(21deg) translate(8px,-6px);
+    filter: blur(1.7px) brightness(1.3) hue-rotate(120deg);
+  }
+  41% {
+    transform: scale(1.18,0.92) rotate(23deg) skewX(13deg) skewY(-17deg) translate(-10px,7px);
+    filter: blur(1.2px) brightness(1.1) hue-rotate(180deg);
+  }
+  56% {
+    transform: scale(0.93,1.13) rotate(-18deg) skewX(-15deg) skewY(19deg) translate(6px,-9px);
+    filter: blur(0.8px) brightness(1.2) hue-rotate(240deg);
+  }
+  72% {
+    transform: scale(1.07,0.98) rotate(11deg) skewX(11deg) skewY(-8deg) translate(-5px,4px);
+    filter: blur(0.5px) brightness(1.1) hue-rotate(300deg);
+  }
+  87% {
+    transform: scale(1.02,1.08) rotate(-7deg) skewX(-7deg) skewY(7deg) translate(3px,-3px);
+    filter: blur(0.2px) brightness(1) hue-rotate(340deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg) skewX(0deg) skewY(0deg) translate(0px,0px);
+    filter: blur(0) brightness(1) hue-rotate(360deg);
+    opacity: 1;
+  }
+}
+/* Animation für drehende O-Spirale */
+.spiral-o-animate {
+  animation: spiral-rotate-ccw 1.5s cubic-bezier(0.68,-0.55,0.27,1.55);
+  transform-origin: 40px 40px;
+}
+
+@keyframes spiral-rotate-ccw {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
 html {
   overflow: hidden;
 }

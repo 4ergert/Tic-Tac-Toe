@@ -266,8 +266,14 @@ function init() {
 
 // a function to render the game board in a 3x3 grid
 function render() {
+    // Nach dem Render: lastBoard auf aktuellen Zustand setzen
+    setTimeout(() => { window.lastBoard = Array.isArray(gameBoard) ? gameBoard.slice() : null; }, 0);
   let board = document.getElementById('board');
   board.innerHTML = '';
+  // Entferne Animation-Klasse von allen SVGs, damit Animation nur beim Setzen getriggert wird
+  document.querySelectorAll('svg.spiral-o-animate').forEach(svg => svg.classList.remove('spiral-o-animate'));
+
+  // Keine Animation-Trigger-Funktion mehr: Spirale dreht nur beim ersten Rendern
   let table = document.createElement('table');
   
   for (let row = 0; row < 3; row++) {
@@ -276,7 +282,48 @@ function render() {
       let td = document.createElement('td');
       let index = row * 3 + col;
       if (gameBoard[index]) {
-        td.textContent = gameBoard[index];
+        if (gameBoard[index] === 'X') {
+          // X-Animation: Linien werden "gezeichnet" mit psychedelischer Bewegung
+          let animateX = false;
+          if (typeof window.lastBoard === 'object' && window.lastBoard[index] !== 'X') animateX = true;
+          td.innerHTML = `<svg width="80" height="80" viewBox="0 0 80 80"${animateX ? ' class=\"psy-x-draw\"' : ''}>
+            <defs>
+              <linearGradient id="psyXGradient" gradientTransform="rotate(45)">
+                <stop offset="0%" stop-color="#ff00ea" />
+                <stop offset="100%" stop-color="#00ffea" />
+              </linearGradient>
+            </defs>
+            <line class="psy-x-line1" x1="15" y1="15" x2="65" y2="65" stroke="url(#psyXGradient)" stroke-width="8" stroke-linecap="round"/>
+            <line class="psy-x-line2" x1="65" y1="15" x2="15" y2="65" stroke="url(#psyXGradient)" stroke-width="8" stroke-linecap="round"/>
+          </svg>`;
+        }
+        else if (gameBoard[index] === 'O') {
+          // ...bestehende O-Logik...
+          let animate = false;
+          if (typeof window.lastBoard === 'object' && window.lastBoard[index] !== 'O') animate = true;
+          const colors = ["#00ffea", "#ff00ea", "#ffe600", "#00ff00", "#ff6600", "#0066ff"];
+          let paths = colors.map((color, i) =>
+            `<path d="${spiralPath(40, 40, 6, 34, 2.5, i/colors.length)}" stroke="${color}" stroke-width="4" fill="none" />`
+          ).join('');
+          td.innerHTML = `<svg${animate ? ' class="spiral-o-animate"' : ''} width="80" height="80" viewBox="0 0 80 80">${paths}</svg>`;
+        } else {
+          td.textContent = gameBoard[index];
+        }
+      }
+        // Speichere den letzten Board-Zustand für Animation-Logik VOR dem Render
+        if (!window.lastBoard) window.lastBoard = Array(9).fill(null);
+      // Hilfsfunktion für SVG-Spirale
+      function spiralPath(cx, cy, innerR, outerR, turns, phase = 0) {
+        let path = '';
+        let points = 180;
+        for (let i = 0; i <= points; i++) {
+          let t = i / points * Math.PI * 2 * turns + phase * Math.PI * 2;
+          let r = innerR + (outerR - innerR) * (i / points);
+          let x = cx + Math.cos(t) * r;
+          let y = cy + Math.sin(t) * r;
+          path += (i === 0 ? 'M' : 'L') + x.toFixed(2) + ',' + y.toFixed(2) + ' ';
+        }
+        return path;
       }
       // Add click handler to each cell
       td.addEventListener('click', function() {
@@ -288,6 +335,7 @@ function render() {
           const newParams = randomFractalParams(true);
           morphFractal(newParams, 1200);
         }
+        // Keine Spiral-Animation mehr nach Klick
       });
 
 
