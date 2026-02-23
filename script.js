@@ -5,6 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 // Fraktal-Parameter und Hilfsfunktionen GLOBAL deklarieren
+let firstClickDone = false;
 let currentZoom = 1.5;
 let fractalParams = {
   maxIter: 64,
@@ -280,73 +281,15 @@ function render() {
       // Add click handler to each cell
       td.addEventListener('click', function() {
         handleCellClick(index);
-        // morphFractal nutzt immer den aktuellen Zustand als Ausgangspunkt
-        const newParams = randomFractalParams(true);
-        morphFractal(newParams, 1200);
-        // fractalParams wird im morphFractal-Ende aktualisiert
+        if (!firstClickDone) {
+          firstClickDone = true;
+        } else {
+          // morphFractal nutzt immer den aktuellen Zustand als Ausgangspunkt
+          const newParams = randomFractalParams(true);
+          morphFractal(newParams, 1200);
+        }
       });
 
-
-// Fraktal-Morphing: Übergang zwischen altem und neuem Fraktal
-
-let fractalParams = null;
-let morphing = false;
-let currentZoom = 1.5 + Math.random() * 0.5; // Global variable for current zoom
-
-function randomFractalParams(zoomIn = false) {
-  if (zoomIn && fractalParams) {
-    const canvas = document.getElementById('fractal-bg');
-    const ctx = canvas.getContext('2d');
-    const w = canvas.width;
-    const h = canvas.height;
-    const image = ctx.getImageData(0, 0, w, h);
-    let minLight = 1;
-    let minX = w / 2, minY = h / 2;
-    for (let y = 0; y < h; y += 1) {
-      for (let x = 0; x < w; x += 1) {
-        const i = (y * w + x) * 4;
-        const rC = image.data[i], gC = image.data[i+1], bC = image.data[i+2];
-        // Helligkeit (Luminanz)
-        const light = (rC + gC + bC) / (3 * 255);
-        if (light < minLight) {
-          minLight = light;
-          minX = x;
-          minY = y;
-        }
-      }
-    }
-    // Zentriere auf den dunkelsten Pixel
-    let px = minX;
-    let py = minY;
-    // Berechne Fraktal-Koordinaten dieses Pixels (vor dem Zoom)
-    const oldZoom = fractalParams.zoom;
-    const oldOffsetX = fractalParams.offsetX;
-    const oldOffsetY = fractalParams.offsetY;
-    const fractalX = (px - w / 2) / (0.5 * oldZoom * w) + oldOffsetX;
-    const fractalY = (py - h / 2) / (0.5 * oldZoom * h) + oldOffsetY;
-    // Zoom erhöhen
-    currentZoom = oldZoom * (1.7 + Math.random() * 0.5);
-    // Berechne neues Offset so, dass fractalX/fractalY nach dem Zoom im Zentrum liegt
-    const newOffsetX = fractalX - (0 - w / 2) / (0.5 * currentZoom * w);
-    const newOffsetY = fractalY - (0 - h / 2) / (0.5 * currentZoom * h);
-    return {
-      maxIter: 32 + Math.floor(Math.random() * 32),
-      zoom: currentZoom,
-      offsetX: newOffsetX,
-      offsetY: newOffsetY,
-      colorOffset: Math.random() * 360
-    };
-  } else {
-    currentZoom = 1.5 + Math.random() * 0.5;
-    return {
-      maxIter: 32 + Math.floor(Math.random() * 32),
-      zoom: currentZoom,
-      offsetX: -0.5 + (Math.random() - 0.5) * 0.2,
-      offsetY: 0 + (Math.random() - 0.5) * 0.2,
-      colorOffset: Math.random() * 360
-    };
-  }
-}
 
 
 function drawFractal(params) {
