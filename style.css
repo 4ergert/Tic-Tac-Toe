@@ -5,11 +5,14 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background-color: #333333;
+  /* background-color entfernt, damit Canvas sichtbar */
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: background 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  /* Optional: add a slight blur to the background for more psychedelic effect */
+  /* background-attachment: fixed; */
 }
 
 h1 {
@@ -82,7 +85,7 @@ main {
 }
 
 .game-board {
-  background-color: transparent;
+  background-color: transparent !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,7 +105,7 @@ td {
   display: table-cell;
   width: 100px;
   height: 100px;
-  border: 5px solid #666;
+  border: 5px solid #fff;
   text-align: center;
   vertical-align: middle;
   font-size: 42px;
@@ -110,17 +113,11 @@ td {
   cursor: pointer;
   box-sizing: border-box;
   color: white;
-  animation: pulseGrid 1.5s infinite;
+  background: transparent !important;
+  /* Kein Pulsieren mehr, nur weißer Rahmen */
 }
 
-@keyframes pulseGrid {
-  0%, 100% {
-    border-color: #aa00ff;
-  }
-  50% {
-    border-color: #550080;
-  }
-}
+/* Entfernt: pulseGrid Animation, Rahmen bleibt weiß */
 
 /* Remove outer borders */
 tr:first-child td {
