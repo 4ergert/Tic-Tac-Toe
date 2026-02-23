@@ -240,7 +240,9 @@ let winner = null;
 function init() {
     console.log('init called');
   render();
-  document.getElementById('newGameBtn').addEventListener('click', resetGame);
+  document.getElementById('newGameBtn').addEventListener('click', function() {
+    window.location.reload();
+  });
   // Fraktal-Hintergrund initial mit festen Startwerten zeichnen
   drawFractal(fractalParams);
   // Simuliere 11 Kachel-Klicks (wie bei User-Interaktion)
